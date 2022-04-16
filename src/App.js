@@ -1,9 +1,12 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { Box } from "@chakra-ui/react";
+import { SearchBar } from "../src/components/SearchBar/SearchBar";
 
 function App() {
-  return <Box>hello</Box>;
+  return (
+    <Box>
+      <SearchBar />
+    </Box>
+  );
 }
 
 export default App;

@@ -1,0 +1,79 @@
+.search-bar {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-input-box {
+  border-color: white;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-weight: 700;
+}
+
+.address-input-box:focus {
+  outline: none;
+  box-shadow: none;
+  border-bottom: 2px solid #0d6efd;
+  border-radius: 0px;
+}
+
+#distance-dropdown {
+  width: 100%;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+  font-weight: 700;
+}
+
+#distance-dropdown:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#distance-dropdown:hover {
+  background-color: black;
+  border-color: black;
+}
+
+#price-range-dropdown {
+  width: 100%;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: 700;
+  border-color: #0d6efd;
+}
+
+#price-range-dropdown:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: black;
+}
+
+#price-range-dropdown:hover {
+  background-color: black;
+  border-color: black;
+}
+
+#user-location-btn {
+  outline: none;
+  box-shadow: none;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+#user-location-btn:hover {
+  background-color: black;
+  border-color: black;
+}
+
+#submit-btn {
+  font-weight: 700;
+  outline: #0d6efd;
+}
+
+#submit-btn:hover {
+  background-color: black;
+  border-color: black;
+}
