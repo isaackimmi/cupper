@@ -1,251 +1,111 @@
+import { FormControl, Button, Box, HStack, Input } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
+import { useNavigate } from "react-router-dom";
 import {
-  Button,
-  Row,
-  Col,
-  InputGroup,
-  FormControl,
-  Dropdown,
-  DropdownButton,
-} from "../../node_modules/react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+  DISTANCE_OPTIONS,
+  RATING_OPTIONS,
+  PRICE_OPTIONS,
+  BUSYNESS_OPTIONS,
+} from "./OptionTypes";
+
+import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 
-//import { usePlacesWidget } from "react-google-autocomplete";
+// const select_options = {
+//   busyness: ["high", "normal", "low"],
+//   price: ["$", "$$", "$$$"],
+//   rating: ["*", "**", "***", "****", "*****"],
+//   distance: ["1 mile", "5 miles", "10 miles", ">20 miles"],
+// };
 
-import "./SearchBar.css";
-import { useHistory } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-
-let autoComplete;
-
-let nearbyRestaurants;
-
-const SearchBar = ({ setRestaurants }) => {
-  const [query, setQuery] = useState("");
-  const autoCompleteRef = useRef(null);
-
-  const [lat, setLat] = useState("");
-  const [long, setLong] = useState("");
-  const [status, setStatus] = useState("Address");
-  const [userLocation, setUserLocation] = useState("");
-
-  const handlePlaceSelect = async (updateQuery) => {
-    const addressObject = autoComplete.getPlace();
-    const query = addressObject.formatted_address;
-    updateQuery(query);
-    console.log(addressObject);
-    setLat(addressObject.geometry.location.lat());
-    setLong(addressObject.geometry.location.lng());
-  };
-
-  const loadScript = (url, callback) => {
-    let script = document.createElement("script");
-    script.type = "text/javascript";
-
-    if (script.readyState) {
-      script.onreadystatechange = () => {
-        if (
-          script.readyState === "loaded" ||
-          script.readyState === "complete"
-        ) {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else {
-      script.onload = () => callback();
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  };
-
-  const handleScriptLoad = (updateQuery, autoCompleteRef) => {
-    autoComplete = new window.google.maps.places.Autocomplete(
-      autoCompleteRef.current,
-      {
-        types: ["address"],
-        componentRestrictions: { country: "us" },
-        fields: ["address_components", "geometry"],
-      }
-    );
-    autoComplete.setFields(["address_components", "formatted_address"]);
-    autoComplete.addListener("place_changed", () =>
-      handlePlaceSelect(updateQuery)
-    );
-  };
-
-  let restaurantResults = [];
+const SearchBar = () => {
+  const [addressObject, setAddressObject] = useState({});
+  const [service, setService] = useState();
+  const [cafes, setCafes] = useState([]);
 
   useEffect(() => {
-    loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=AIzaSyB1q8elwYtcDQ8JUHMweywLu471QOoccy0&libraries=places,geometry`,
-      () => handleScriptLoad(setQuery, autoCompleteRef)
+    setService(
+      new window.google.maps.places.PlacesService(document.createElement("div"))
     );
   }, []);
 
-  useEffect(() => {
-    let config = {
-      method: "post",
-      url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyB1q8elwYtcDQ8JUHMweywLu471QOoccy0\n`,
-      headers: {},
-    };
+  const handleSelectPlace = async (autocomplete) => {
+    const address = autocomplete.getPlace();
+    setAddressObject({ lat: address.geometry.location.lat() });
+    setAddressObject((addressObject) => ({
+      ...addressObject,
+      long: address.geometry.location.lng(),
+    }));
+  };
 
-    if (lat !== null && long !== null) {
-      axios(config)
-        .then(function (response) {
-          setUserLocation(
-            JSON.stringify(response.data.results[0].formatted_address)
-          );
+  const loadAutocomplete = () => {
+    var input = document.getElementById("location-name");
+    var autocomplete = new window.google.maps.places.Autocomplete(input, {
+      fields: ["address_components", "geometry"],
+    });
 
-          if (response !== null) {
-            setQuery(
-              JSON.stringify(response.data.results[0].formatted_address)
-            );
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  }, [lat, long]);
-
-  let history = useHistory();
+    autocomplete.setFields(["address_components", "geometry"]);
+    autocomplete.addListener("place_changed", () => {
+      handleSelectPlace(autocomplete);
+    });
+  };
 
   const handleClick = () => {
-    let userLocation = new window.google.maps.LatLng(lat, long);
-    setUserLocation(userLocation);
+    let userLocation = new window.google.maps.LatLng(
+      addressObject.lat,
+      addressObject.long
+    );
 
     var request = {
       location: userLocation,
       type: ["restaurant"],
-      rankBy: window.google.maps.places.RankBy.DISTANCE,
+      radius: 500,
     };
 
-    nearbyRestaurants = new window.google.maps.places.PlacesService(
-      document.createElement("div")
-    );
-    nearbyRestaurants.nearbySearch(request, callback);
+    service.nearbySearch(request, callback);
   };
 
-  function callback(results, status) {
+  const callback = (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        restaurantResults[i] = results[i];
-        //console.log(restaurantResults[i]);
-      }
-
-      restaurantResults.forEach((element) => {
-        var restaurantLong = element.geometry.location.lng();
-        var restaurantLat = element.geometry.location.lat();
-
-        var restaurantLocation = new window.google.maps.LatLng(
-          restaurantLat,
-          restaurantLong
-        );
-
-        var distanceBetween =
-          window.google.maps.geometry.spherical.computeDistanceBetween(
-            userLocation,
-            restaurantLocation
-          );
-
-        const roundedDistance = (Math.round(distanceBetween) / 1000).toFixed(2);
-
-        const distanceObj = { distance: roundedDistance };
-
-        element = Object.assign(element, distanceObj);
+      results.forEach((element) => {
+        cafes.push(element);
+        console.log(element);
       });
     }
-
-    console.log(restaurantResults);
-    setRestaurants(restaurantResults);
-    history.push("/main-page");
-  }
-
-  const handleChange = (event) => {
-    setQuery(event.target.value);
-    console.log(autoCompleteRef.current.value);
   };
 
-  const handleUserLocation = () => {
-    if (!navigator.geolocation) {
-      setStatus(
-        "Geolocation is not supported by your browser. Please enter your address manually."
-      );
-    } else {
-      setStatus("Locating...");
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLong(position.coords.longitude);
-        },
-        () => {
-          setStatus(
-            "Unable to retrieve your location. Please enter your address manually."
-          );
-        }
-      );
-    }
-  };
+  window.google.maps.event.addDomListener(window, "load", loadAutocomplete);
 
   return (
-    <Row className="search-bar">
-      <Col className="col-6">
-        <InputGroup>
-          <FormControl
-            placeholder={status}
-            aria-label="address"
-            aria-describedby="user-address"
-            className="address-input-box"
-            ref={autoCompleteRef}
-            onChange={handleChange}
-            value={query}
+    <FormControl>
+      <HStack spacing={3}>
+        <Input flex={[0, 0, "200%"]} id="location-name" />
+        <Box flex={[0, 0, "50%"]}>
+          <Select
+            placeholder="busyness"
+            id="busyness"
+            options={BUSYNESS_OPTIONS}
           />
-          <Button
-            onClick={handleUserLocation}
-            variant="primary"
-            id="user-location-btn"
-          >
-            <i className="bi bi-geo-alt-fill"></i>
-          </Button>
-        </InputGroup>
-      </Col>
-
-      <Col className="col-2">
-        <DropdownButton
-          variant="outline-secondary"
-          title="Distance"
-          id="distance-dropdown"
-        >
-          <Dropdown.Item href="#">1 km</Dropdown.Item>
-          <Dropdown.Item href="#">5km</Dropdown.Item>
-          <Dropdown.Item href="#">10km</Dropdown.Item>
-          <Dropdown.Item href="#">20km</Dropdown.Item>
-        </DropdownButton>
-      </Col>
-
-      <Col className="col-2">
-        <DropdownButton
-          variant="outline-secondary"
-          title="Price Range"
-          id="price-range-dropdown"
-        >
-          <Dropdown.Item href="#">$</Dropdown.Item>
-          <Dropdown.Item href="#">$$</Dropdown.Item>
-          <Dropdown.Item href="#">$$$</Dropdown.Item>
-          <Dropdown.Item href="#">$$$$</Dropdown.Item>
-        </DropdownButton>
-      </Col>
-
-      <Col className="d-flex justify-content-start align-items-center col-1">
-        <Button onClick={handleClick} variant="primary" id="submit-btn">
-          Submit
+        </Box>
+        <Box flex={[0, 0, "45%"]}>
+          <Select placeholder="rating" id="busyness" options={RATING_OPTIONS} />
+        </Box>
+        <Box flex={[0, 0, "45%"]}>
+          <Select placeholder="price" id="busyness" options={PRICE_OPTIONS} />
+        </Box>
+        <Box flex={[0, 0, "45%"]}>
+          <Select
+            placeholder="distance"
+            id="busyness"
+            options={DISTANCE_OPTIONS}
+          />
+        </Box>
+        <Button flex={[0, 0, "25%"]} onClick={handleClick}>
+          Go!
         </Button>
-      </Col>
-    </Row>
+      </HStack>
+    </FormControl>
   );
 };
 
