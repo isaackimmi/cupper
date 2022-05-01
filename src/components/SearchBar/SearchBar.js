@@ -69,8 +69,9 @@ const SearchBar = () => {
   const callback = (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((element) => {
-        cafes.push(element);
+        setCafes(cafes.concat(element));
         console.log(element);
+        axios.post('/api/locations', element)
       });
     }
   };
