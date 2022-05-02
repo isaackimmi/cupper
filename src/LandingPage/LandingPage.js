@@ -1,6 +1,6 @@
 import { Box, VStack, Flex, Text } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar/SearchBar";
-import NavBar from "../components/SearchBar/NavBar/NavBar";
+import NavBar from "../components/NavBar/NavBar";
 
 const LandingPage = () => {
   return (

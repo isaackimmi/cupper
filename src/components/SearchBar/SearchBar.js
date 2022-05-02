@@ -1,28 +1,25 @@
-import { FormControl, Button, Box, HStack, Input } from "@chakra-ui/react";
+import {
+  FormControl,
+  Button,
+  HStack,
+  Input,
+  FormLabel,
+  useToast,
+} from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { useNavigate } from "react-router-dom";
-import {
-  DISTANCE_OPTIONS,
-  RATING_OPTIONS,
-  PRICE_OPTIONS,
-  BUSYNESS_OPTIONS,
-} from "./OptionTypes";
+import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
 
 import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
-
-// const select_options = {
-//   busyness: ["high", "normal", "low"],
-//   price: ["$", "$$", "$$$"],
-//   rating: ["*", "**", "***", "****", "*****"],
-//   distance: ["1 mile", "5 miles", "10 miles", ">20 miles"],
-// };
+import { StarIcon } from "@chakra-ui/icons";
 
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
   const [service, setService] = useState();
   const [cafes, setCafes] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     setService(
@@ -69,8 +66,15 @@ const SearchBar = () => {
   const callback = (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((element) => {
-        cafes.push(element);
-        console.log(element);
+        cafes.push({
+          address_object: {
+            vicinity: element.vicinity,
+            lat: element.geometry.location.lat(),
+            long: element.geometry.location.lng(),
+          },
+          name: element.name,
+          place_id: element.place_id,
+        });
       });
     }
   };
@@ -79,28 +83,27 @@ const SearchBar = () => {
 
   return (
     <FormControl>
-      <HStack spacing={3}>
-        <Input flex={[0, 0, "200%"]} id="location-name" />
-        <Box flex={[0, 0, "50%"]}>
-          <Select
-            placeholder="busyness"
-            id="busyness"
-            options={BUSYNESS_OPTIONS}
-          />
-        </Box>
-        <Box flex={[0, 0, "45%"]}>
-          <Select placeholder="rating" id="busyness" options={RATING_OPTIONS} />
-        </Box>
-        <Box flex={[0, 0, "45%"]}>
-          <Select placeholder="price" id="busyness" options={PRICE_OPTIONS} />
-        </Box>
-        <Box flex={[0, 0, "45%"]}>
-          <Select
-            placeholder="distance"
-            id="busyness"
-            options={DISTANCE_OPTIONS}
-          />
-        </Box>
+      <HStack spacing={3} alignItems={"end"}>
+        <FormControl id="location">
+          <FormLabel>Location</FormLabel>
+          <Input flex={[0, 0, "200%"]} id="location-name" />
+        </FormControl>
+
+        <FormControl flex={[0, 0, "45%"]} id="rating-options">
+          <FormLabel>Rating</FormLabel>
+          <Select id="rating" options={RATING_OPTIONS} />
+        </FormControl>
+
+        <FormControl flex={[0, 0, "45%"]} id="rating-options">
+          <FormLabel>Price</FormLabel>
+          <Select id="price" options={PRICE_OPTIONS} />
+        </FormControl>
+
+        <FormControl flex={[0, 0, "45%"]} id="distance-options">
+          <FormLabel>Distance</FormLabel>
+          <Select id="distance" options={DISTANCE_OPTIONS} />
+        </FormControl>
+
         <Button flex={[0, 0, "25%"]} onClick={handleClick}>
           Go!
         </Button>
