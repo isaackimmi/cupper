@@ -5,15 +5,17 @@ import {
   Input,
   FormLabel,
   useToast,
+  Text,
 } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Select } from "chakra-react-select";
-import { useNavigate } from "react-router-dom";
 import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
 
 import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
-import { StarIcon } from "@chakra-ui/icons";
+import { colors } from "../../theme";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
@@ -74,6 +76,7 @@ const SearchBar = () => {
           },
           name: element.name,
           place_id: element.place_id,
+          people_checked_in: 0,
         });
       });
     }
@@ -85,27 +88,36 @@ const SearchBar = () => {
     <FormControl>
       <HStack spacing={3} alignItems={"end"}>
         <FormControl id="location">
-          <FormLabel>Location</FormLabel>
+          <FormLabel color={"primary"}>Location</FormLabel>
           <Input flex={[0, 0, "200%"]} id="location-name" />
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
-          <FormLabel>Rating</FormLabel>
+          <FormLabel color={"primary"}>Rating</FormLabel>
           <Select id="rating" options={RATING_OPTIONS} />
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
-          <FormLabel>Price</FormLabel>
+          <FormLabel color={"primary"}>Price</FormLabel>
           <Select id="price" options={PRICE_OPTIONS} />
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="distance-options">
-          <FormLabel>Distance</FormLabel>
+          <FormLabel color={"primary"}>Distance</FormLabel>
           <Select id="distance" options={DISTANCE_OPTIONS} />
         </FormControl>
 
-        <Button flex={[0, 0, "25%"]} onClick={handleClick}>
-          Go!
+        <Button
+          backgroundColor={colors.secondary}
+          flex={[0, 0, "25%"]}
+          onClick={handleClick}
+          fontWeight={800}
+          fontSize={18}
+          alignItems={"center"}
+        >
+          <Text color={colors.white}>Go</Text>
+          {""}
+          <ChevronRightIcon color={colors.white} boxSize={6} />
         </Button>
       </HStack>
     </FormControl>

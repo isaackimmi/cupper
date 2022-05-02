@@ -7,11 +7,12 @@ const NavBar = () => {
       alignItems={"center"}
       justifyContent={"space-between"}
       w={"100%"}
-      //   border={"1px solid black"}
       py={8}
       px={3}
     >
-      <Heading px={8}>Cupper.</Heading>
+      <Heading color={"primary"} px={8}>
+        Cupper.
+      </Heading>
       <Spacer />
       <HStack
         spacing={20}
@@ -21,18 +22,22 @@ const NavBar = () => {
       >
         <HStack spacing={3} alignItems={"center"}>
           {" "}
-          <Heading fontSize={"lg"}>Search</Heading>
+          <Heading color={"primary"} fontSize={"lg"}>
+            Search
+          </Heading>
           <Search2Icon />
         </HStack>
         <HStack spacing={3} alignItems={"center"}>
           {" "}
-          <Heading spacing={3} fontSize={"lg"}>
+          <Heading color={"primary"} spacing={3} fontSize={"lg"}>
             Main Page
           </Heading>
           <CalendarIcon />
         </HStack>
         <HStack spacing={3} alignItems={"center"}>
-          <Heading fontSize={"lg"}>Profile Settings</Heading>
+          <Heading color={"primary"} fontSize={"lg"}>
+            Profile Settings
+          </Heading>
           <SettingsIcon />
         </HStack>
       </HStack>
