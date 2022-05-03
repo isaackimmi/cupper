@@ -1,7 +1,26 @@
 import { Flex, HStack, Box, Heading, Spacer } from "@chakra-ui/react";
 import { CalendarIcon, Search2Icon, SettingsIcon } from "@chakra-ui/icons";
+import { Link as RouteLink, Route } from "react-router-dom";
 
 const NavBar = () => {
+  const navBarElements = [
+    {
+      label: "Search",
+      path: "/",
+      icon: <Search2Icon />,
+    },
+    {
+      label: "Main Page",
+      path: "/main-page",
+      icon: <CalendarIcon />,
+    },
+    {
+      label: "Profile Settings",
+      path: "/profile-settings",
+      icon: <SettingsIcon />,
+    },
+  ];
+
   return (
     <Flex
       alignItems={"center"}
@@ -20,26 +39,14 @@ const NavBar = () => {
         alignContent={"flex-start"}
         justifyContent={"space-between"}
       >
-        <HStack spacing={3} alignItems={"center"}>
-          {" "}
-          <Heading color={"primary"} fontSize={"lg"}>
-            Search
-          </Heading>
-          <Search2Icon />
-        </HStack>
-        <HStack spacing={3} alignItems={"center"}>
-          {" "}
-          <Heading color={"primary"} spacing={3} fontSize={"lg"}>
-            Main Page
-          </Heading>
-          <CalendarIcon />
-        </HStack>
-        <HStack spacing={3} alignItems={"center"}>
-          <Heading color={"primary"} fontSize={"lg"}>
-            Profile Settings
-          </Heading>
-          <SettingsIcon />
-        </HStack>
+        {navBarElements.map((element) => (
+          <HStack spacing={3} alignItems={"center"}>
+            <Heading color={"primary"} fontSize={"lg"}>
+              <RouteLink to={element.path}>{element.label}</RouteLink>
+            </Heading>
+            {element.icon}
+          </HStack>
+        ))}
       </HStack>
     </Flex>
   );

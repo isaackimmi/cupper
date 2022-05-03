@@ -21,6 +21,7 @@ const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
   const [service, setService] = useState();
   const [cafes, setCafes] = useState([]);
+  const [isLoadingCafes, setIsLoadingCafes] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -117,7 +118,6 @@ const SearchBar = () => {
         >
           <Text color={colors.white}>Go</Text>
           {""}
-          <ChevronRightIcon color={colors.white} boxSize={6} />
         </Button>
       </HStack>
     </FormControl>
