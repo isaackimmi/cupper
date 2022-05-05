@@ -7,21 +7,22 @@ import {
   useToast,
   Text,
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Select } from "chakra-react-select";
-import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
-
-import { useEffect, useRef, useState } from "react";
-
-import axios from "axios";
 import { colors } from "../../theme";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
+import conversions from "../../../node_modules/conversions/dist/conversions";
+
+import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
+import { filterCafe } from "./FilterCafe";
+
+import { useEffect, useState } from "react";
 
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
+  const [selectedRating, setSelectedRating] = useState(-1.0);
+  const [selectedPrice, setSelectedPrice] = useState(-1);
+  const [selectedOrder, setSelectedOrder] = useState("Ascending");
   const [service, setService] = useState();
   const [cafes, setCafes] = useState([]);
-  const [isLoadingCafes, setIsLoadingCafes] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const SearchBar = () => {
     );
   }, []);
 
-  const handleSelectPlace = async (autocomplete) => {
+  const handleSelectPlace = (autocomplete) => {
     const address = autocomplete.getPlace();
     setAddressObject({ lat: address.geometry.location.lat() });
     setAddressObject((addressObject) => ({
@@ -59,16 +60,37 @@ const SearchBar = () => {
 
     var request = {
       location: userLocation,
-      type: ["restaurant"],
-      radius: 500,
+      type: ["cafe"],
+      radius: 50000,
     };
 
+    // console.log(selectedOrder);
+    // console.log(selectedPrice);
+    // console.log(selectedPrice);
     service.nearbySearch(request, callback);
   };
 
   const callback = (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((element) => {
+        const userLatLng = new window.google.maps.LatLng(
+          addressObject.lat,
+          addressObject.long
+        );
+
+        const cafeLocation = new window.google.maps.LatLng(
+          element.geometry.location.lat(),
+          element.geometry.location.lng()
+        );
+
+        const distanceBetween =
+          window.google.maps.geometry.spherical.computeDistanceBetween(
+            userLatLng,
+            cafeLocation
+          );
+
+        console.log(conversions(distanceBetween, "metres", "miles"));
+
         cafes.push({
           address_object: {
             vicinity: element.vicinity,
@@ -78,7 +100,29 @@ const SearchBar = () => {
           name: element.name,
           place_id: element.place_id,
           people_checked_in: 0,
+          rating: element.rating,
+          price_level: element.price_level,
+          distance: conversions(distanceBetween, "metres", "miles"),
         });
+      });
+
+      filterCafe(
+        cafes,
+        Number(selectedRating.toFixed(1)),
+        selectedPrice,
+        selectedOrder,
+        setCafes
+      );
+    } else {
+      console.log(window.google.maps.places.PlacesServiceStatus);
+      toast({
+        title: "No cafes near you :(",
+        description:
+          "There are no cafes near you! Enter a new address and try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
       });
     }
   };
@@ -95,21 +139,45 @@ const SearchBar = () => {
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
           <FormLabel color={"primary"}>Rating</FormLabel>
-          <Select id="rating" options={RATING_OPTIONS} />
+          <Select
+            id="rating"
+            options={RATING_OPTIONS}
+            focusBorderColor={colors.secondary}
+            selectedOptionStyle="check"
+            onChange={(rating) => {
+              setSelectedRating(rating.value);
+            }}
+          />
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
           <FormLabel color={"primary"}>Price</FormLabel>
-          <Select id="price" options={PRICE_OPTIONS} />
+          <Select
+            id="price"
+            options={PRICE_OPTIONS}
+            focusBorderColor={colors.secondary}
+            selectedOptionStyle="check"
+            onChange={(price) => {
+              setSelectedPrice(price.value);
+            }}
+          />
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="distance-options">
           <FormLabel color={"primary"}>Distance</FormLabel>
-          <Select id="distance" options={DISTANCE_OPTIONS} />
+          <Select
+            id="distance"
+            options={DISTANCE_OPTIONS}
+            focusBorderColor={colors.secondary}
+            selectedOptionStyle="check"
+            onChange={(order) => {
+              setSelectedOrder(order.value);
+            }}
+          />
         </FormControl>
 
         <Button
-          backgroundColor={colors.secondary}
+          backgroundColor={colors.accent}
           flex={[0, 0, "25%"]}
           onClick={handleClick}
           fontWeight={800}

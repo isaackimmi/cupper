@@ -1,7 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, VStack, Flex } from "@chakra-ui/react";
+import NavBar from "../components/NavBar/NavBar";
 
 const ProfileSettings = () => {
-  return <Box>profile settings</Box>;
+  return (
+    <VStack spacing={80}>
+      <NavBar />
+      <Flex>profile settings</Flex>
+    </VStack>
+  );
 };
 
 export default ProfileSettings;

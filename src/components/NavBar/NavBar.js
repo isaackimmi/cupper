@@ -1,6 +1,6 @@
 import { Flex, HStack, Box, Heading, Spacer } from "@chakra-ui/react";
 import { CalendarIcon, Search2Icon, SettingsIcon } from "@chakra-ui/icons";
-import { Link as RouteLink, Route } from "react-router-dom";
+import { Link as RouteLink } from "react-router-dom";
 
 const NavBar = () => {
   const navBarElements = [
@@ -33,6 +33,7 @@ const NavBar = () => {
         Cupper.
       </Heading>
       <Spacer />
+
       <HStack
         spacing={20}
         pr={8}
@@ -40,7 +41,7 @@ const NavBar = () => {
         justifyContent={"space-between"}
       >
         {navBarElements.map((element) => (
-          <HStack spacing={3} alignItems={"center"}>
+          <HStack key={element.label} spacing={3} alignItems={"center"}>
             <Heading color={"primary"} fontSize={"lg"}>
               <RouteLink to={element.path}>{element.label}</RouteLink>
             </Heading>
