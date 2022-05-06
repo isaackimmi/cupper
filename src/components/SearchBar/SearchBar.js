@@ -6,10 +6,16 @@ import {
   FormLabel,
   useToast,
   Text,
+  InputGroup,
+  InputLeftAddon,
+  InputLeftElement,
+  Box,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { colors } from "../../theme";
 import conversions from "../../../node_modules/conversions/dist/conversions";
+import { Search2Icon } from "@chakra-ui/icons";
+import "./SearchBar.css";
 
 import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
 import { filterCafe } from "./FilterCafe";
@@ -64,9 +70,6 @@ const SearchBar = () => {
       radius: 50000,
     };
 
-    // console.log(selectedOrder);
-    // console.log(selectedPrice);
-    // console.log(selectedPrice);
     service.nearbySearch(request, callback);
   };
 
@@ -134,18 +137,40 @@ const SearchBar = () => {
       <HStack spacing={3} alignItems={"end"}>
         <FormControl id="location">
           <FormLabel color={"primary"}>Location</FormLabel>
-          <Input flex={[0, 0, "200%"]} id="location-name" />
+          <InputGroup size={"md"}>
+            <InputLeftElement
+              pointerEvents={"none"}
+              children={<Search2Icon />}
+              p={2}
+            />
+            <Input
+              borderWidth={4}
+              borderRadius={50}
+              flex={[0, 0, "200%"]}
+              id="location-name"
+            />
+          </InputGroup>
         </FormControl>
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
           <FormLabel color={"primary"}>Rating</FormLabel>
-          <Select
+          {/* <Box
+            as={Select}
             id="rating"
             options={RATING_OPTIONS}
             focusBorderColor={colors.secondary}
             selectedOptionStyle="check"
             onChange={(rating) => {
               setSelectedRating(rating.value);
+            }}
+          /> */}
+          <Select
+            id="rating"
+            options={RATING_OPTIONS}
+            focusBorderColor={colors.secondary}
+            selectedOptionStyle="check"
+            onChange={(rating) => {
+              setSelectedPrice(rating.value);
             }}
           />
         </FormControl>
