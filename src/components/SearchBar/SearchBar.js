@@ -15,7 +15,6 @@ import { Select } from "chakra-react-select";
 import { colors } from "../../theme";
 import conversions from "../../../node_modules/conversions/dist/conversions";
 import { Search2Icon } from "@chakra-ui/icons";
-import "./SearchBar.css";
 
 import { DISTANCE_OPTIONS, RATING_OPTIONS, PRICE_OPTIONS } from "./OptionTypes";
 import { filterCafe } from "./FilterCafe";
@@ -117,7 +116,6 @@ const SearchBar = () => {
         setCafes
       );
     } else {
-      console.log(window.google.maps.places.PlacesServiceStatus);
       toast({
         title: "No cafes near you :(",
         description:
@@ -154,16 +152,7 @@ const SearchBar = () => {
 
         <FormControl flex={[0, 0, "45%"]} id="rating-options">
           <FormLabel color={"primary"}>Rating</FormLabel>
-          {/* <Box
-            as={Select}
-            id="rating"
-            options={RATING_OPTIONS}
-            focusBorderColor={colors.secondary}
-            selectedOptionStyle="check"
-            onChange={(rating) => {
-              setSelectedRating(rating.value);
-            }}
-          /> */}
+
           <Select
             id="rating"
             options={RATING_OPTIONS}
