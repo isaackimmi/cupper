@@ -21,6 +21,8 @@ import { filterCafe } from "./FilterCafe";
 
 import { useEffect, useState } from "react";
 
+import axios from "axios";
+
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
   const [selectedRating, setSelectedRating] = useState(-1.0);
@@ -91,8 +93,6 @@ const SearchBar = () => {
             cafeLocation
           );
 
-        console.log(conversions(distanceBetween, "metres", "miles"));
-
         cafes.push({
           address_object: {
             vicinity: element.vicinity,
@@ -159,7 +159,7 @@ const SearchBar = () => {
             focusBorderColor={colors.secondary}
             selectedOptionStyle="check"
             onChange={(rating) => {
-              setSelectedPrice(rating.value);
+              setSelectedRating(rating.value);
             }}
           />
         </FormControl>
