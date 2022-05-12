@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 
-const url = "";
+const URL = "localhost:3001";
 
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
@@ -76,7 +76,7 @@ const SearchBar = () => {
     service.nearbySearch(request, callback);
   };
 
-  const callback = (results, status) => {
+  const callback = async (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((element) => {
         const userLatLng = new window.google.maps.LatLng(
@@ -95,18 +95,20 @@ const SearchBar = () => {
             cafeLocation
           );
 
-        cafes.push({
+        const cafeObject = {
+          place_id: element.place_id,
           address_object: {
             vicinity: element.vicinity,
             lat: element.geometry.location.lat(),
             long: element.geometry.location.lng(),
           },
           name: element.name,
-          place_id: element.place_id,
           rating: element.rating,
           price_level: element.price_level,
           distance: conversions(distanceBetween, "metres", "miles"),
-        });
+        };
+
+        cafes.push(cafeObject);
       });
 
       console.log(cafes);
@@ -119,7 +121,17 @@ const SearchBar = () => {
         setCafes
       );
 
-      axios.post();
+      for (const cafe of cafes) {
+        try {
+          const res = await axios.post(
+            "http://localhost:3001/api/restaurants",
+            cafe
+          );
+          console.log(res);
+        } catch (error) {
+          console.log(error.response.data);
+        }
+      }
     } else {
       toast({
         title: "No cafes near you :(",
