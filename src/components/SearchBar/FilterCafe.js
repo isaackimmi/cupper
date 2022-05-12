@@ -19,17 +19,21 @@ export const filterCafe = (cafes, rating, price, order, setCafes) => {
     });
   }
 
+  if (rating === -1.0 && price === -1) {
+    newCafes = cafes;
+  }
+
   setCafes(sortCafes(newCafes, order));
 };
 
 const sortCafes = (cafes, order) => {
-  if (order === "Ascending") {
-    cafes.sort((a, b) => {
-      return a.distance - b.distance;
-    });
-  } else {
+  if (order === 2) {
     cafes.sort((a, b) => {
       return b.distance - a.distance;
+    });
+  } else {
+    return cafes.sort((a, b) => {
+      return a.distance - b.distance;
     });
   }
 

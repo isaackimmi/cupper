@@ -23,11 +23,13 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 
+const url = "";
+
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
   const [selectedRating, setSelectedRating] = useState(-1.0);
   const [selectedPrice, setSelectedPrice] = useState(-1);
-  const [selectedOrder, setSelectedOrder] = useState("Ascending");
+  const [selectedOrder, setSelectedOrder] = useState(1);
   const [service, setService] = useState();
   const [cafes, setCafes] = useState([]);
   const toast = useToast();
@@ -101,12 +103,13 @@ const SearchBar = () => {
           },
           name: element.name,
           place_id: element.place_id,
-          people_checked_in: 0,
           rating: element.rating,
           price_level: element.price_level,
           distance: conversions(distanceBetween, "metres", "miles"),
         });
       });
+
+      console.log(cafes);
 
       filterCafe(
         cafes,
@@ -115,6 +118,8 @@ const SearchBar = () => {
         selectedOrder,
         setCafes
       );
+
+      axios.post();
     } else {
       toast({
         title: "No cafes near you :(",
