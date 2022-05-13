@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 
-const URL = "localhost:3001";
+const URL = "http://localhost:3001";
 
 const SearchBar = () => {
   const [addressObject, setAddressObject] = useState({});
@@ -70,7 +70,7 @@ const SearchBar = () => {
     var request = {
       location: userLocation,
       type: ["cafe"],
-      radius: 50000,
+      radius: 5,
     };
 
     service.nearbySearch(request, callback);
@@ -111,8 +111,6 @@ const SearchBar = () => {
         cafes.push(cafeObject);
       });
 
-      console.log(cafes);
-
       filterCafe(
         cafes,
         Number(selectedRating.toFixed(1)),
@@ -123,20 +121,40 @@ const SearchBar = () => {
 
       for (const cafe of cafes) {
         try {
-          const res = await axios.post(
-            "http://localhost:3001/api/restaurants",
-            cafe
-          );
+          const res = await axios.post(`${URL}+/api/restaurants`, cafe);
           console.log(res);
         } catch (error) {
           console.log(error.response.data);
         }
       }
-    } else {
+    } else if (
+      status === window.google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT
+    ) {
+      toast({
+        title: "Hold on!",
+        description:
+          "You reached the query limit. Please wait, refresh the page, and try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    } else if (
+      status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS
+    ) {
       toast({
         title: "No cafes near you :(",
         description:
           "There are no cafes near you! Enter a new address and try again.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      toast({
+        title: "Unknown Error!",
+        description: "An unknown error occurred. Please wait and try again.",
         status: "error",
         duration: 3000,
         isClosable: true,
