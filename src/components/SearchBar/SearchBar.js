@@ -21,11 +21,16 @@ import { filterCafe } from "./FilterCafe";
 
 import { useEffect, useState } from "react";
 
+import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from "axios";
 
 const URL = "http://localhost:3001";
 
 const SearchBar = () => {
+  let navigate = useNavigate();
+  let location = useLocation();
+
   const [addressObject, setAddressObject] = useState({});
   const [selectedRating, setSelectedRating] = useState(-1.0);
   const [selectedPrice, setSelectedPrice] = useState(-1);
@@ -70,7 +75,7 @@ const SearchBar = () => {
     var request = {
       location: userLocation,
       type: ["cafe"],
-      radius: 5,
+      radius: 50000,
     };
 
     service.nearbySearch(request, callback);
@@ -110,7 +115,6 @@ const SearchBar = () => {
 
         cafes.push(cafeObject);
       });
-
       filterCafe(
         cafes,
         Number(selectedRating.toFixed(1)),
@@ -124,8 +128,16 @@ const SearchBar = () => {
           const res = await axios.post(`${URL}+/api/restaurants`, cafe);
           console.log(res);
         } catch (error) {
-          console.log(error.response.data);
+          console.log(error.response);
         }
+      }
+
+      localStorage.setItem("cafes", JSON.stringify(cafes));
+
+      if (location.pathname === "/main-page") {
+        window.location.reload();
+      } else {
+        navigate("/main-page");
       }
     } else if (
       status === window.google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT
@@ -226,7 +238,7 @@ const SearchBar = () => {
         </FormControl>
 
         <Button
-          backgroundColor={colors.accent}
+          backgroundColor={"#DF2935"}
           flex={[0, 0, "25%"]}
           onClick={handleClick}
           fontWeight={800}

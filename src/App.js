@@ -4,6 +4,7 @@ import LandingPage from "./LandingPage/LandingPage";
 import MainPage from "./MainPage/MainPage";
 import ProfileSettings from "./ProfileSettings/ProfileSettings";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
   return (
