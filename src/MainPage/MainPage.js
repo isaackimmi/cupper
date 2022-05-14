@@ -8,15 +8,18 @@ import {
   Stack,
   Wrap,
   WrapItem,
+  Image,
 } from "@chakra-ui/react";
 
-import ClimbingBoxLadder from "react-spinners/ClimbingBoxLoader";
+import BarLoader from "react-spinners/BarLoader";
 
 import SearchBar from "../components/SearchBar/SearchBar";
 import MainCard from "../components/MainCard/MainCard";
 import NavBar from "../components/NavBar/NavBar";
 
 import "./MainPage.css";
+
+import sloth from "../images/sloth.svg";
 
 import { useEffect, useState } from "react";
 
@@ -32,10 +35,15 @@ const MainPage = () => {
       <NavBar />
 
       {cafes === null ? (
-        <VStack pt={60} alignItems={"center"} justifyContent={"center"}>
-          <ClimbingBoxLadder color={"#80FFE8"} size={50} />
-          <Heading pl={20} pt={35}>
-            Loading...
+        <VStack
+          pt={40}
+          alignItems={"center"}
+          justifyContent={"center"}
+          spacing={20}
+        >
+          <Image w={60} h={60} src={sloth} alt="Course Cover" />
+          <Heading className="heading-transition">
+            You forgot to search for cafes!
           </Heading>
         </VStack>
       ) : (
@@ -47,11 +55,12 @@ const MainPage = () => {
             {cafes.map((element) => (
               <WrapItem key={element.id}>
                 <MainCard
-                  address_object={element.address_object}
+                  key={element.id}
+                  address_object={element.address_object.vicinity}
                   rating={element.rating}
                   price_level={element.price_level}
                   distance={element.distance}
-                  numberOfPeople={element.distance}
+                  numberOfPeople={element.numberOfPeople}
                   name={element.name}
                 />
               </WrapItem>

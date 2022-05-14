@@ -18,16 +18,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import coffee from "../../images/cupocoffee.svg";
 
 import "./MainCard.css";
-import { rangeRight } from "lodash";
-import { useState } from "react";
 
 const MainCard = ({
-  address_object,
+  vicinity,
   rating,
   price_level,
   distance,
   numberOfPeople,
   name,
+  width,
 }) => {
   const { colorMode } = useColorMode();
   const bgColor = { light: "gray.200", dark: "gray.700" };
@@ -42,9 +41,8 @@ const MainCard = ({
   return (
     <Box
       position={"relative"}
-      w="400px"
+      w={width || "400px"}
       rounded="20px"
-      overflow="hidden"
       boxShadow="sm"
       sx={{
         background: "rgba(255, 255, 255, 0.2)",
@@ -52,6 +50,7 @@ const MainCard = ({
         boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
         backdroFilter: "blur(50px)",
         border: "1px solid rgba(255, 255, 255, 0.53)",
+        zIndex: 5,
       }}
       className={"main-card"}
     >
@@ -63,12 +62,15 @@ const MainCard = ({
           position: "absolute",
           top: "-10px",
           left: "-10px",
-          borderRadius: "61% 39% 33% 67% / 23% 62% 38% 77% ",
+          borderRadius: "45% 55% 22% 78% / 59% 81% 19% 41% ",
+          zIndex: 10,
         }}
         justifyContent={"center"}
         alignItems={"center"}
       >
-        5.0
+        <Text fontSize={18} fontWeight={600}>
+          5
+        </Text>
       </Flex>
       <Flex
         alignItems={"center"}
@@ -77,7 +79,7 @@ const MainCard = ({
       >
         <Image w={60} h={60} src={coffee} alt="Course Cover" />
       </Flex>
-      <Box p={5}>
+      <Box px={10} py={8}>
         <Stack isInline align="baseline">
           <Badge
             variant="solid"
@@ -126,7 +128,7 @@ const MainCard = ({
           {name}
         </Text>
         <Text isTruncated fontWeight="light" fontSize="md">
-          {address_object.vicinity}
+          {vicinity}
         </Text>
         <Stack isInline justify="space-between" color={textColor[colorMode]}>
           <Box d="flex">
@@ -146,14 +148,13 @@ const MainCard = ({
         </Stack>
         <Box textAlign="center">
           <Button
-            variantColor="teal"
+            color={"#080708"}
+            backgroundColor={"#E1EFF6"}
             size="lg"
             mt={3}
-            boxShadow="sm"
-            _hover={{ boxShadow: "md" }}
-            _active={{ boxShadow: "lg" }}
+            boxShadow="md"
           >
-            Book Table
+            Check In
           </Button>
         </Box>
       </Box>
