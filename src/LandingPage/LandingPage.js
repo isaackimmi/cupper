@@ -50,13 +50,13 @@ const LandingPage = () => {
           align={"flex-start"}
           alignItems="center"
         >
-          <Text fontWeight={600} fontSize={30}>
+          <Text fontWeight={700} fontSize={30}>
             Hot Places{" "}
           </Text>
-          <SunIcon boxSize={5} />
+          <SunIcon boxSize={8} />
         </HStack>
 
-        {topCafes === [] ? (
+        {topCafes === null ? (
           <VStack alignItems={"center"} justifyContent={"center"}>
             <ClimbingBoxLadder color={"#80FFE8"} size={50} />
             <Heading pl={20} pt={35}>
@@ -69,7 +69,7 @@ const LandingPage = () => {
               <WrapItem key={element.id}>
                 <MainCard
                   width={"300px"}
-                  address_object={element.address_object}
+                  vicinity={element.address_object}
                   rating={element.rating}
                   price_level={element.price_level}
                   distance={element.distance}

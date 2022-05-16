@@ -56,7 +56,7 @@ const MainPage = () => {
               <WrapItem key={element.id}>
                 <MainCard
                   key={element.id}
-                  address_object={element.address_object.vicinity}
+                  vicinity={element.address_object.vicinity}
                   rating={element.rating}
                   price_level={element.price_level}
                   distance={element.distance}
