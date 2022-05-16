@@ -171,6 +171,10 @@ const SearchBar = () => {
         duration: 3000,
         isClosable: true,
         position: "top",
+=======
+        setCafes(cafes.concat(element));
+        console.log(element);
+        axios.post('/api/locations', element)
       });
     }
   };
