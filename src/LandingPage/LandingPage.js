@@ -13,7 +13,6 @@ import { ClimbingBoxLadder } from "react-spinners";
 
 import SearchBar from "../components/SearchBar/SearchBar";
 import NavBar from "../components/NavBar/NavBar";
-
 import MainCard from "../components/MainCard/MainCard";
 
 import "./LandingPage.css";
@@ -27,7 +26,7 @@ const LandingPage = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       try {
-        const res = await axios.post(`http://localhost:3001/api/top`);
+        const res = await axios.get(`/api/top`);
         setTopCafes(res.data);
       } catch (error) {
         console.log(error);
