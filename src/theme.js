@@ -1,4 +1,4 @@
-import { background, extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { background, color, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { mode, StyleFunctionProps } from "@chakra-ui/theme-tools";
 
 // const config = {
@@ -6,7 +6,7 @@ import { mode, StyleFunctionProps } from "@chakra-ui/theme-tools";
 //   useSystemColorMode: false,
 // };
 
-const switchColorScheme = "#0066FF";
+const switchColorScheme = "#06BEE1";
 
 export const space = {
   px: "1px",
@@ -46,25 +46,11 @@ export const space = {
 };
 
 export const colors = {
-  white: "#F4F5F6",
-  accent: "#75fbfd",
-  meta: "#777E90",
-  primaryBg: {
-    light: "#fff",
-    dark: "#141416",
-  },
-  secondaryBg: {
-    light: "#777E90",
-    dark: "#23262F",
-  },
-  primaryText: {
-    light: "#23262F",
-    dark: "#FCFCFD",
-  },
-  secondaryText: {
-    light: "#b1b5c3",
-    dark: "#b1b0b1",
-  },
+  primary: "#000000",
+  white: "#FFFFFF",
+  secondary: "#0496FF",
+  accent: "#FF8484",
+  purple: "#533A7B",
   selectedSwitch: {
     50: switchColorScheme,
     100: switchColorScheme,
@@ -82,6 +68,22 @@ export const colors = {
   error: "#FF5050",
   link: "#40a9ff",
   border: "#353945",
+};
+
+const components = {
+  Text: {
+    variants: {
+      primary: {
+        color: colors.primary,
+      },
+    },
+    secondary: {
+      color: colors.secondary,
+    },
+    body: {
+      color: colors.accent,
+    },
+  },
 };
 
 const layerStyles = {
@@ -138,4 +140,5 @@ export const theme = extendTheme({
   //   config,
   radii,
   space,
+  components,
 });

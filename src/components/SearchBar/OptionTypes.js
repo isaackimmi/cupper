@@ -1,79 +1,56 @@
-export const RATING_OPTIONS = [
-  {
-    label: "1",
-    value: "*",
-  },
-  {
-    label: "2",
-    value: "**",
-  },
-  {
-    label: "3",
-    value: "***",
-  },
-  {
-    label: "4",
-    value: "****",
-  },
-  {
-    label: "5",
-    value: "*****",
-  },
-];
-
-export const BUSYNESS_OPTIONS = [
-  {
-    label: "high",
-    value: "high",
-  },
-  {
-    label: "medium",
-    value: "medium",
-  },
-  {
-    label: "low",
-    value: "low",
-  },
-];
-
 export const PRICE_OPTIONS = [
   {
     label: "$",
-    value: "$",
+    value: 1,
   },
   {
     label: "$$",
-    value: "$$",
+    value: 2,
   },
   {
     label: "$$$",
-    value: "$$$",
+    value: 3,
   },
   {
     label: "$$$$",
-    value: "$$$$",
+    value: 4,
   },
   {
     label: "$$$$$",
-    value: "$$$$$",
+    value: 5,
+  },
+];
+
+export const RATING_OPTIONS = [
+  {
+    label: "*",
+    value: 1.0,
+  },
+  {
+    label: "**",
+    value: 2.0,
+  },
+  {
+    label: "***",
+    value: 3.0,
+  },
+  {
+    label: "****",
+    value: 4.0,
+  },
+  {
+    label: "*****",
+    value: 5.0,
   },
 ];
 
 export const DISTANCE_OPTIONS = [
   {
-    label: "1 mile",
-    value: "1 mile",
+    label: "Ascending",
+    value: 1,
   },
   {
-    label: "5 miles",
-    value: "5 miles",
-  },
-  {
-    label: "10 miles",
-    value: "10 miles",
-  },
-  {
-    label: "> 20 miles",
-    value: ">20 miles",
+    label: "Descending",
+    value: 2,
   },
 ];
