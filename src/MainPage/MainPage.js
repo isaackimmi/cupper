@@ -25,23 +25,41 @@ import axios from "axios";
 
 const URL = "http://localhost:3001";
 
-const MainPage = ({ cafes, onCafeChange }) => {
-  const [userToken, setUserToken] = useState();
-
+const MainPage = ({
+  userID,
+  userToken,
+  onUserTokenChange,
+  cafes,
+  onCafeChange,
+}) => {
   useEffect(() => {
-    onCafeChange(JSON.parse(localStorage.getItem("cafes")));
-    setUserToken(localStorage.getItem("user"));
+    // onCafeChange(JSON.parse(localStorage.getItem("cafes")));
+    onUserTokenChange(localStorage.getItem("user"));
 
-    // const test = async () => {
-    //   try {
-    //     const res = await axios.get(`${URL}/api/restaurants/`);
-    //     console.log(res);
-    //   } catch (error) {
-    //     console.log(error.response);
-    //   }
-    // };
+    console.log(userID);
 
-    // test();
+    const test = async () => {
+      // CHECK IN
+      // try {
+      //   const res = await axios.post(
+      //     `${URL}/api/checkin`,
+      //     { place_id: "ChIJDbVnnDS0j4ARYA5QoNG9KNw" },
+      //     {
+      //       headers: { Authorization: `bearer ${userToken}` },
+      //     }
+      //   );
+      //   console.log(res);
+      // } catch (error) {
+      //   console.log(error.response);
+      // }
+
+      try {
+        const res = await axios.get(`${URL}/api/restaurants`);
+        console.log(res);
+      } catch (error) {}
+    };
+
+    test();
   }, []);
 
   return (

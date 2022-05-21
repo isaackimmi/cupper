@@ -107,8 +107,8 @@ const SearchBar = (props) => {
           place_id: element.place_id,
           address_object: {
             vicinity: element.vicinity,
-            lat: element.geometry.location.lat(),
-            long: element.geometry.location.lng(),
+            // lat: element.geometry.location.lat(),
+            // long: element.geometry.location.lng(),
           },
           name: element.name,
           rating: element.rating,
@@ -127,22 +127,23 @@ const SearchBar = (props) => {
         // setCafes
       );
 
+      let cafes = [];
+
       for (const cafe of filteredCafes) {
         try {
+          console.log(cafe);
           console.log(`posting to ${URL} ${cafe}`);
           const res = await axios.post(`${URL}/api/restaurants`, cafe);
           console.log(res);
+          cafes.push(res.data);
         } catch (error) {
           console.log(error);
         }
       }
 
-      console.log(filteredCafes);
-
-      onCafeChange(filteredCafes);
+      onCafeChange(cafes);
       localStorage.setItem("cafes", JSON.stringify(filteredCafes));
 
-      // console.log(location.pathname);
       if (location.pathname === "/landing-page") {
         navigate("/main-page");
       }

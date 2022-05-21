@@ -28,7 +28,7 @@ import axios from "axios";
 
 const URL = "http://localhost:3001";
 
-const Login = () => {
+const Login = ({ onUserIDChange, onUserTokenChange }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -44,7 +44,10 @@ const Login = () => {
 
     try {
       const res = await axios.post(`${URL}/api/login`, payload);
-      console.log(res);
+      onUserTokenChange(res.data.token);
+
+      onUserIDChange(res.data.id);
+
       localStorage.setItem("user", res.data.token);
     } catch (error) {
       console.log(error.response);

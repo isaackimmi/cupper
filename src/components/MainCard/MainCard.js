@@ -74,7 +74,7 @@ const MainCard = ({
         alignItems={"center"}
       >
         <Text fontSize={18} fontWeight={600}>
-          5
+          {numberOfPeople}
         </Text>
       </Flex>
       <Flex

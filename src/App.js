@@ -9,6 +9,10 @@ import { useState } from "react";
 
 function App() {
   const [cafes, setCafes] = useState([]);
+  const [userToken, setUserToken] = useState([]);
+  const [userID, setUserID] = useState();
+
+  console.log(cafes);
 
   return (
     <BrowserRouter>
@@ -22,7 +26,16 @@ function App() {
             />
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              userToken={userToken}
+              onUserTokenChange={setUserToken}
+              onUserIDChange={setUserID}
+            />
+          }
+        />
         <Route path="/" element={<SignUp />} />
         <Route
           path="/main-page"
@@ -30,6 +43,9 @@ function App() {
             <MainPage
               cafes={cafes}
               onCafeChange={(cafes) => setCafes([...cafes])}
+              userToken={userToken}
+              onUserTokenChange={setUserToken}
+              userID={userID}
             />
           }
         />
