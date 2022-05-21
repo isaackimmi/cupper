@@ -131,9 +131,8 @@ const SearchBar = (props) => {
 
       for (const cafe of filteredCafes) {
         try {
-          console.log(cafe);
-          console.log(`posting to ${URL} ${cafe}`);
-          const res = await axios.post(`${URL}/api/restaurants`, cafe);
+          await axios.post(`${URL}/api/restaurants`, cafe);
+          const res = await axios.get(`/api/restaurants/${cafe.place_id}`)
           console.log(res);
           cafes.push(res.data);
         } catch (error) {
