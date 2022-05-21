@@ -1,4 +1,4 @@
-import { Flex, HStack, Box, Heading, Spacer } from "@chakra-ui/react";
+import { Flex, HStack, Box, Heading, Spacer, Button } from "@chakra-ui/react";
 import { CalendarIcon, Search2Icon, SettingsIcon } from "@chakra-ui/icons";
 import { Link as RouteLink } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const NavBar = () => {
   const navBarElements = [
     {
       label: "Search",
-      path: "/",
+      path: "/landing-page",
       icon: <Search2Icon />,
     },
     {
@@ -32,7 +32,7 @@ const NavBar = () => {
       px={3}
     >
       <Heading className="floating-logo" color={"primary"} px={8}>
-        <RouteLink to={"/"}>Cupper</RouteLink>
+        <RouteLink to={"/landing-page"}>Cupper</RouteLink>
       </Heading>
       <Spacer />
 
@@ -45,7 +45,11 @@ const NavBar = () => {
       >
         {navBarElements.map((element) => (
           <HStack key={element.label} spacing={3} alignItems={"center"}>
-            <Heading color={"primary"} fontSize={"lg"}>
+            <Heading
+              className="nav-link nav-link-fade-up"
+              color={"primary"}
+              fontSize={"lg"}
+            >
               <RouteLink to={element.path}>{element.label}</RouteLink>
             </Heading>
             {element.icon}

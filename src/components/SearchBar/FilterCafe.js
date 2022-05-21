@@ -1,6 +1,6 @@
 let newCafes;
 
-export const filterCafe = (cafes, rating, price, order, setCafes) => {
+export const filterCafe = (cafes, rating, price, order) => {
   if (rating !== -1.0 && price !== -1) {
     newCafes = cafes.filter((element) => {
       return element.rating <= rating && element.price_level <= price;
@@ -23,7 +23,9 @@ export const filterCafe = (cafes, rating, price, order, setCafes) => {
     newCafes = cafes;
   }
 
-  setCafes(sortCafes(newCafes, order));
+  return sortCafes(newCafes, order);
+
+  // setCafes(sortCafes(newCafes, order));
 };
 
 const sortCafes = (cafes, order) => {

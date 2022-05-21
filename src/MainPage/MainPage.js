@@ -11,8 +11,6 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-import BarLoader from "react-spinners/BarLoader";
-
 import SearchBar from "../components/SearchBar/SearchBar";
 import MainCard from "../components/MainCard/MainCard";
 import NavBar from "../components/NavBar/NavBar";
@@ -23,15 +21,31 @@ import sloth from "../images/sloth.svg";
 
 import { useEffect, useState } from "react";
 
-const MainPage = () => {
-  const [cafes, setCafes] = useState([]);
+import axios from "axios";
+
+const URL = "http://localhost:3001";
+
+const MainPage = ({ cafes, onCafeChange }) => {
+  const [userToken, setUserToken] = useState();
 
   useEffect(() => {
-    setCafes(JSON.parse(localStorage.getItem("cafes")));
+    onCafeChange(JSON.parse(localStorage.getItem("cafes")));
+    setUserToken(localStorage.getItem("user"));
+
+    // const test = async () => {
+    //   try {
+    //     const res = await axios.get(`${URL}/api/restaurants/`);
+    //     console.log(res);
+    //   } catch (error) {
+    //     console.log(error.response);
+    //   }
+    // };
+
+    // test();
   }, []);
 
   return (
-    <VStack spacing={10} w={"100%"}>
+    <VStack spacing={10} w={"100%"} pb={20}>
       <NavBar />
 
       {cafes === null ? (
@@ -49,13 +63,12 @@ const MainPage = () => {
       ) : (
         <>
           <Flex w={"75%"} className={"search-bar-transition"}>
-            <SearchBar />
+            <SearchBar onCafeChange={(cafes) => onCafeChange([...cafes])} />
           </Flex>
           <Wrap px={40} w={"100%"} pt={20} justify={"center"} spacing={10}>
             {cafes.map((element) => (
-              <WrapItem key={element.id}>
+              <WrapItem>
                 <MainCard
-                  key={element.id}
                   vicinity={element.address_object.vicinity}
                   rating={element.rating}
                   price_level={element.price_level}

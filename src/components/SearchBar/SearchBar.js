@@ -27,7 +27,9 @@ import axios from "axios";
 
 const URL = "http://localhost:3001";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
+  const { onCafeChange } = props;
+
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -36,7 +38,7 @@ const SearchBar = () => {
   const [selectedPrice, setSelectedPrice] = useState(-1);
   const [selectedOrder, setSelectedOrder] = useState(1);
   const [service, setService] = useState();
-  const [cafes, setCafes] = useState([]);
+  // const [cafes, setCafes] = useState([]);
   const toast = useToast();
 
   useEffect(() => {
@@ -83,7 +85,8 @@ const SearchBar = () => {
 
   const callback = async (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((element) => {
+      const newResults = results.map((element) => {
+        // results.forEach((element) => {
         const userLatLng = new window.google.maps.LatLng(
           addressObject.lat,
           addressObject.long
@@ -113,30 +116,34 @@ const SearchBar = () => {
           distance: conversions(distanceBetween, "metres", "miles"),
         };
 
-        cafes.push(cafeObject);
+        return cafeObject;
       });
-      filterCafe(
-        cafes,
+
+      const filteredCafes = filterCafe(
+        newResults,
         Number(selectedRating.toFixed(1)),
         selectedPrice,
-        selectedOrder,
-        setCafes
+        selectedOrder
+        // setCafes
       );
 
-      for (const cafe of cafes) {
+      for (const cafe of filteredCafes) {
         try {
-          const res = await axios.post(`${URL}+/api/restaurants`, cafe);
+          console.log(`posting to ${URL} ${cafe}`);
+          const res = await axios.post(`${URL}/api/restaurants`, cafe);
           console.log(res);
         } catch (error) {
-          console.log(error.response);
+          console.log(error);
         }
       }
 
-      localStorage.setItem("cafes", JSON.stringify(cafes));
+      console.log(filteredCafes);
 
-      if (location.pathname === "/main-page") {
-        window.location.reload();
-      } else {
+      onCafeChange(filteredCafes);
+      localStorage.setItem("cafes", JSON.stringify(filteredCafes));
+
+      // console.log(location.pathname);
+      if (location.pathname === "/landing-page") {
         navigate("/main-page");
       }
     } else if (

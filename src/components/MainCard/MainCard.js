@@ -8,12 +8,15 @@ import {
   Button,
   Flex,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { StarIcon } from "@chakra-ui/icons";
 
 import { faDollarSign, faExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import CheckInModal from "../Modal/CheckInModal";
 
 import coffee from "../../images/cupocoffee.svg";
 
@@ -37,6 +40,8 @@ const MainCard = ({
   for (let index = 0; index < length; index++) {
     priceArray.push(price_level);
   }
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -81,38 +86,21 @@ const MainCard = ({
       </Flex>
       <Box px={10} py={8}>
         <Stack isInline align="baseline">
-          <Badge
-            variant="solid"
-            variantColor="teal"
-            rounded="full"
-            py={0.5}
-            px={2}
-          >
+          <Badge variant="solid" rounded="full" py={0.5} px={2}>
             <Box as="span">
               {priceArray.map((element) =>
                 element ? (
                   <FontAwesomeIcon
-                    key={element}
                     icon={faDollarSign}
                     color={element < price_level ? "teal.500" : "gray.300"}
                   />
                 ) : (
-                  <FontAwesomeIcon
-                    key={element}
-                    icon={faExclamation}
-                    color={"gray.300"}
-                  />
+                  <FontAwesomeIcon icon={faExclamation} color={"gray.300"} />
                 )
               )}
             </Box>
           </Badge>
-          <Badge
-            variant="solid"
-            variantColor="teal"
-            rounded="full"
-            py={0.5}
-            px={2}
-          >
+          <Badge variant="solid" rounded="full" py={0.5} px={2}>
             Cafe
           </Badge>
           <Text
@@ -140,7 +128,6 @@ const MainCard = ({
                     name="star"
                     overflow={"hidden"}
                     color={i < Math.floor(rating) ? "teal.500" : "gray.300"}
-                    key={i}
                   />
                 ))}
             </Box>
@@ -153,11 +140,13 @@ const MainCard = ({
             size="lg"
             mt={3}
             boxShadow="md"
+            onClick={onOpen}
           >
             Check In
           </Button>
         </Box>
       </Box>
+      <CheckInModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

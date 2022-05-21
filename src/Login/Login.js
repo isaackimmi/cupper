@@ -33,7 +33,6 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [waiting, setWaiting] = useState(false);
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -46,6 +45,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${URL}/api/login`, payload);
       console.log(res);
+      localStorage.setItem("user", res.data.token);
     } catch (error) {
       console.log(error.response);
     }

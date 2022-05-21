@@ -20,7 +20,7 @@ import "./LandingPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const LandingPage = () => {
+const LandingPage = ({ cafes, onCafeChange }) => {
   const [topCafes, setTopCafes] = useState([]);
 
   useEffect(() => {
@@ -39,7 +39,8 @@ const LandingPage = () => {
     <VStack spacing={50} pb={20}>
       <NavBar />
       <Flex pt={40} w={"75%"} className={"floating-search"}>
-        <SearchBar />
+        <SearchBar onCafeChange={(cafes) => onCafeChange([...cafes])} />
+        {/* <SearchBar /> */}
       </Flex>
       <VStack pt={40} w={"100%"} spacing={2}>
         <HStack
