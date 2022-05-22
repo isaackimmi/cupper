@@ -5,36 +5,29 @@ import Login from "./Login/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./Login/SignUp";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [cafes, setCafes] = useState([]);
-  const [userToken, setUserToken] = useState([]);
-  const [userID, setUserID] = useState();
+  const [user, setUser] = useState(null);
 
-  console.log(cafes);
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('user')
+    if (loggedUserJSON) {
+      setUser(JSON.parse(loggedUserJSON))
+    }
+  }, [])
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/landing-page"
-          element={
-            <LandingPage
-              cafes={cafes}
-              onCafeChange={(cafes) => setCafes([...cafes])}
-            />
-          }
+          element={<LandingPage onCafeChange={(cafes) => setCafes([...cafes])} />}
         />
         <Route
           path="/login"
-          element={
-            <Login
-              userToken={userToken}
-              onUserTokenChange={setUserToken}
-              onUserIDChange={setUserID}
-            />
-          }
+          element={<Login onUserChange={setUser} />}
         />
         <Route path="/" element={<SignUp />} />
         <Route
@@ -43,9 +36,7 @@ function App() {
             <MainPage
               cafes={cafes}
               onCafeChange={(cafes) => setCafes([...cafes])}
-              userToken={userToken}
-              onUserTokenChange={setUserToken}
-              userID={userID}
+              user={user}
             />
           }
         />

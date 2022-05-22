@@ -7,9 +7,7 @@ import {
   useToast,
   Text,
   InputGroup,
-  InputLeftAddon,
   InputLeftElement,
-  Box,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { colors } from "../../theme";
@@ -25,22 +23,20 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
-const URL = "http://localhost:3001";
-
 const SearchBar = (props) => {
   const { onCafeChange } = props;
 
-  let navigate = useNavigate();
-  let location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [addressObject, setAddressObject] = useState({});
   const [selectedRating, setSelectedRating] = useState(-1.0);
   const [selectedPrice, setSelectedPrice] = useState(-1);
   const [selectedOrder, setSelectedOrder] = useState(1);
   const [service, setService] = useState();
-  // const [cafes, setCafes] = useState([]);
   const toast = useToast();
 
+  console.log(service)
   useEffect(() => {
     setService(
       new window.google.maps.places.PlacesService(document.createElement("div"))
@@ -86,7 +82,6 @@ const SearchBar = (props) => {
   const callback = async (results, status) => {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       const newResults = results.map((element) => {
-        // results.forEach((element) => {
         const userLatLng = new window.google.maps.LatLng(
           addressObject.lat,
           addressObject.long
@@ -124,25 +119,19 @@ const SearchBar = (props) => {
         Number(selectedRating.toFixed(1)),
         selectedPrice,
         selectedOrder
-        // setCafes
       );
 
       let cafes = [];
 
       for (const cafe of filteredCafes) {
         try {
-          await axios.post(`${URL}/api/restaurants`, cafe);
           const res = await axios.get(`/api/restaurants/${cafe.place_id}`)
-          console.log(res);
           cafes.push(res.data);
         } catch (error) {
           console.log(error);
         }
       }
-
       onCafeChange(cafes);
-      localStorage.setItem("cafes", JSON.stringify(filteredCafes));
-
       if (location.pathname === "/landing-page") {
         navigate("/main-page");
       }
@@ -151,8 +140,7 @@ const SearchBar = (props) => {
     ) {
       toast({
         title: "Hold on!",
-        description:
-          "You reached the query limit. Please wait, refresh the page, and try again.",
+        description: "You reached the query limit. Please wait, refresh the page, and try again.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -163,8 +151,7 @@ const SearchBar = (props) => {
     ) {
       toast({
         title: "No cafes near you :(",
-        description:
-          "There are no cafes near you! Enter a new address and try again.",
+        description: "There are no cafes near you! Enter a new address and try again.",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -212,9 +199,7 @@ const SearchBar = (props) => {
             options={RATING_OPTIONS}
             focusBorderColor={colors.secondary}
             selectedOptionStyle="check"
-            onChange={(rating) => {
-              setSelectedRating(rating.value);
-            }}
+            onChange={(rating) => setSelectedRating(rating.value)}
           />
         </FormControl>
 
@@ -225,9 +210,7 @@ const SearchBar = (props) => {
             options={PRICE_OPTIONS}
             focusBorderColor={colors.secondary}
             selectedOptionStyle="check"
-            onChange={(price) => {
-              setSelectedPrice(price.value);
-            }}
+            onChange={(price) => setSelectedPrice(price.value)}
           />
         </FormControl>
 
@@ -238,9 +221,7 @@ const SearchBar = (props) => {
             options={DISTANCE_OPTIONS}
             focusBorderColor={colors.secondary}
             selectedOptionStyle="check"
-            onChange={(order) => {
-              setSelectedOrder(order.value);
-            }}
+            onChange={(order) => setSelectedOrder(order.value)}
           />
         </FormControl>
 

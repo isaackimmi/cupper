@@ -1,4 +1,4 @@
-import { Flex, HStack, Box, Heading, Spacer, Button } from "@chakra-ui/react";
+import { Flex, HStack, Heading, Spacer } from "@chakra-ui/react";
 import { CalendarIcon, Search2Icon, SettingsIcon } from "@chakra-ui/icons";
 import { Link as RouteLink } from "react-router-dom";
 

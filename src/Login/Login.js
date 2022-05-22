@@ -9,30 +9,25 @@ import {
   InputLeftElement,
   Box,
   Link,
-  Avatar,
   FormControl,
-  FormHelperText,
   InputRightElement,
   Image,
 } from "@chakra-ui/react";
-
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
 import { AtSignIcon, UnlockIcon } from "@chakra-ui/icons";
-
 import coffee from "../images/cupocoffee.svg";
-
 import NavBar from "../components/NavBar/NavBar";
 
 import axios from "axios";
 
 const URL = "http://localhost:3001";
 
-const Login = ({ onUserIDChange, onUserTokenChange }) => {
+const Login = ({ onUserChange }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -44,11 +39,9 @@ const Login = ({ onUserIDChange, onUserTokenChange }) => {
 
     try {
       const res = await axios.post(`${URL}/api/login`, payload);
-      onUserTokenChange(res.data.token);
-
-      onUserIDChange(res.data.id);
-
-      localStorage.setItem("user", res.data.token);
+      onUserChange(res.data);
+      window.localStorage.setItem("user", JSON.stringify(res.data));
+      navigate("/landing-page");
     } catch (error) {
       console.log(error.response);
     }
