@@ -15,7 +15,7 @@ import {
   Image,
   HStack
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import "./Login.css";
 
@@ -31,10 +31,11 @@ const URL = "http://localhost:3001";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -46,6 +47,7 @@ const SignUp = () => {
 
     try {
       const res = await axios.post(`${URL}/api/users`, payload);
+      navigate('/main-page')
       console.log(res);
     } catch (error) {
       console.log(error);
