@@ -46,7 +46,7 @@ const SignUp = () => {
     };
 
     try {
-      const res = await axios.post(`${URL}/api/users`, payload);
+      const res = await axios.post(`/api/users`, payload);
       navigate('/landing-page')
       console.log(res);
     } catch (error) {

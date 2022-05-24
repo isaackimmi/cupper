@@ -21,7 +21,6 @@ import NavBar from "../components/NavBar/NavBar";
 
 import axios from "axios";
 
-const URL = "http://localhost:3001";
 
 const Login = ({ onUserChange }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +37,7 @@ const Login = ({ onUserChange }) => {
     };
 
     try {
-      const res = await axios.post(`${URL}/api/login`, payload);
+      const res = await axios.post(`/api/login`, payload);
       onUserChange(res.data);
       window.localStorage.setItem("user", JSON.stringify(res.data));
       navigate("/landing-page");
