@@ -8,12 +8,12 @@ import {
   Stack,
   InputLeftElement,
   Box,
-  Link,
   FormControl,
   InputRightElement,
   Image,
+  Text
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import { AtSignIcon, UnlockIcon } from "@chakra-ui/icons";
 import coffee from "../images/cupocoffee.svg";
@@ -134,8 +134,10 @@ const Login = ({ onUserChange }) => {
         </Stack>
         <Box>
           New to us?{" "}
-          <Link color="#97D2FB" href="/sign-up">
-            Sign Up
+          <Link color="#97D2FB" to="/">
+            <Text as="span" color="#97D2FB"> 
+              Sign Up
+            </Text>
           </Link>
         </Box>
       </Flex>

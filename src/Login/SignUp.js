@@ -8,13 +8,14 @@ import {
   Stack,
   InputLeftElement,
   Box,
-  Link,
-  Avatar,
+  Text,
   FormControl,
   FormHelperText,
   InputRightElement,
   Image,
+  HStack
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 import "./Login.css";
 
@@ -162,8 +163,10 @@ const SignUp = () => {
         </Stack>
         <Box>
           Already have an account?{" "}
-          <Link color="#97D2FB" href="/login">
-            Login
+          <Link to="/login">
+            <Text as="span" color="#97D2FB"> 
+              Login
+            </Text>
           </Link>
         </Box>
       </Flex>
