@@ -15,12 +15,7 @@ const NavBar = () => {
       label: "Main Page",
       path: "/main-page",
       icon: <CalendarIcon />,
-    },
-    {
-      label: "Profile Settings",
-      path: "/profile-settings",
-      icon: <SettingsIcon />,
-    },
+    }
   ];
 
   return (

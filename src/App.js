@@ -1,6 +1,5 @@
 import LandingPage from "./LandingPage/LandingPage";
 import MainPage from "./MainPage/MainPage";
-import ProfileSettings from "./ProfileSettings/ProfileSettings";
 import Login from "./Login/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./Login/SignUp";
@@ -40,7 +39,6 @@ function App() {
             />
           }
         />
-        <Route path="/profile-settings" element={<ProfileSettings />} />
       </Routes>
     </BrowserRouter>
   );
