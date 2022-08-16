@@ -24,8 +24,6 @@ export const filterCafe = (cafes, rating, price, order) => {
   }
 
   return sortCafes(newCafes, order);
-
-  // setCafes(sortCafes(newCafes, order));
 };
 
 const sortCafes = (cafes, order) => {

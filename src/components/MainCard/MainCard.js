@@ -4,7 +4,6 @@ import {
   Badge,
   Text,
   Stack,
-  Icon,
   Button,
   Flex,
   useColorMode,
@@ -12,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { StarIcon } from "@chakra-ui/icons";
-
+import { useState } from 'react';
 import { faDollarSign, faExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -30,10 +29,14 @@ const MainCard = ({
   numberOfPeople,
   name,
   width,
+  place_id,
+  user
 }) => {
   const { colorMode } = useColorMode();
-  const bgColor = { light: "gray.200", dark: "gray.700" };
   const textColor = { light: "gray.500", dark: "gray.100" };
+  const [people, setPeople] = useState(numberOfPeople);
+  const [isCheckIn, setIsCheckIn] = useState(numberOfPeople.includes(window.localStorage.getItem('id')));
+
   let length = price_level;
   let priceArray = [];
 
@@ -74,7 +77,7 @@ const MainCard = ({
         alignItems={"center"}
       >
         <Text fontSize={18} fontWeight={600}>
-          {numberOfPeople}
+          {people.length}
         </Text>
       </Flex>
       <Flex
@@ -142,11 +145,19 @@ const MainCard = ({
             boxShadow="md"
             onClick={onOpen}
           >
-            Check In
+            {isCheckIn ? 'Check Out' : 'Check In'}
           </Button>
         </Box>
       </Box>
-      <CheckInModal isOpen={isOpen} onClose={onClose} />
+      <CheckInModal
+        isOpen={isOpen}
+        onClose={onClose}
+        user={user}
+        place_id={place_id}
+        isCheckIn={isCheckIn}
+        onCheckInChange={setIsCheckIn} 
+        people={people}
+        onPeopleChange={setPeople} />
     </Box>
   );
 };

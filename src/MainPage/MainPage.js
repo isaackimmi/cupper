@@ -1,11 +1,7 @@
 import {
-  Box,
   VStack,
   Flex,
-  Text,
-  HStack,
   Heading,
-  Stack,
   Wrap,
   WrapItem,
   Image,
@@ -14,54 +10,15 @@ import {
 import SearchBar from "../components/SearchBar/SearchBar";
 import MainCard from "../components/MainCard/MainCard";
 import NavBar from "../components/NavBar/NavBar";
+import sloth from "../images/sloth.svg";
 
 import "./MainPage.css";
 
-import sloth from "../images/sloth.svg";
-
-import { useEffect, useState } from "react";
-
-import axios from "axios";
-
-const URL = "http://localhost:3001";
-
 const MainPage = ({
-  userID,
-  userToken,
-  onUserTokenChange,
+  user,
   cafes,
   onCafeChange,
 }) => {
-  useEffect(() => {
-    // onCafeChange(JSON.parse(localStorage.getItem("cafes")));
-    onUserTokenChange(localStorage.getItem("user"));
-
-    console.log(userID);
-
-    const test = async () => {
-      // CHECK IN
-      // try {
-      //   const res = await axios.post(
-      //     `${URL}/api/checkin`,
-      //     { place_id: "ChIJDbVnnDS0j4ARYA5QoNG9KNw" },
-      //     {
-      //       headers: { Authorization: `bearer ${userToken}` },
-      //     }
-      //   );
-      //   console.log(res);
-      // } catch (error) {
-      //   console.log(error.response);
-      // }
-
-      try {
-        const res = await axios.get(`${URL}/api/restaurants`);
-        console.log(res);
-      } catch (error) {}
-    };
-
-    test();
-  }, []);
-
   return (
     <VStack spacing={10} w={"100%"} pb={20}>
       <NavBar />
@@ -93,6 +50,8 @@ const MainPage = ({
                   distance={element.distance}
                   numberOfPeople={element.numberOfPeople}
                   name={element.name}
+                  place_id={element.place_id}
+                  user={user}
                 />
               </WrapItem>
             ))}

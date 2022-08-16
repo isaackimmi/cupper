@@ -1,4 +1,4 @@
-import { Flex, HStack, Box, Heading, Spacer, Button } from "@chakra-ui/react";
+import { Flex, HStack, Heading, Spacer } from "@chakra-ui/react";
 import { CalendarIcon, Search2Icon, SettingsIcon } from "@chakra-ui/icons";
 import { Link as RouteLink } from "react-router-dom";
 
@@ -15,12 +15,7 @@ const NavBar = () => {
       label: "Main Page",
       path: "/main-page",
       icon: <CalendarIcon />,
-    },
-    {
-      label: "Profile Settings",
-      path: "/profile-settings",
-      icon: <SettingsIcon />,
-    },
+    }
   ];
 
   return (

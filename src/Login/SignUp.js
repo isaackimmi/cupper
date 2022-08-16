@@ -8,13 +8,14 @@ import {
   Stack,
   InputLeftElement,
   Box,
-  Link,
-  Avatar,
+  Text,
   FormControl,
   FormHelperText,
   InputRightElement,
   Image,
+  HStack
 } from "@chakra-ui/react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import "./Login.css";
 
@@ -30,10 +31,11 @@ const URL = "http://localhost:3001";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -44,7 +46,8 @@ const SignUp = () => {
     };
 
     try {
-      const res = await axios.post(`${URL}/api/users`, payload);
+      const res = await axios.post(`/api/users`, payload);
+      navigate('/landing-page')
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -162,8 +165,10 @@ const SignUp = () => {
         </Stack>
         <Box>
           Already have an account?{" "}
-          <Link color="#97D2FB" href="/login">
-            Login
+          <Link to="/login">
+            <Text as="span" color="#97D2FB"> 
+              Login
+            </Text>
           </Link>
         </Box>
       </Flex>

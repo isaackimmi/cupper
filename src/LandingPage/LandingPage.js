@@ -1,5 +1,4 @@
 import {
-  Box,
   VStack,
   Flex,
   Text,
@@ -10,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { SunIcon } from "@chakra-ui/icons";
 import { ClimbingBoxLadder } from "react-spinners";
-
 import SearchBar from "../components/SearchBar/SearchBar";
 import NavBar from "../components/NavBar/NavBar";
 import MainCard from "../components/MainCard/MainCard";
@@ -20,20 +18,14 @@ import "./LandingPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const LandingPage = ({ cafes, onCafeChange }) => {
+const LandingPage = ({ onCafeChange }) => {
   const [topCafes, setTopCafes] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      try {
-        const res = await axios.get(`/api/top`);
-        setTopCafes(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [topCafes]);
+    axios
+      .get(`/api/top`)
+      .then(res => setTopCafes(res.data))
+  }, []);
 
   return (
     <VStack spacing={50} pb={20}>
@@ -69,7 +61,7 @@ const LandingPage = ({ cafes, onCafeChange }) => {
               <WrapItem key={element.id}>
                 <MainCard
                   width={"300px"}
-                  vicinity={element.address_object}
+                  vicinity={element.address_object.vicinity}
                   rating={element.rating}
                   price_level={element.price_level}
                   distance={element.distance}
